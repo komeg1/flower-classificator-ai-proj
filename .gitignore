@@ -1,0 +1,7 @@
+.idea
+flowers
+venv
+*.csv
+*.jpg
+__pycache__
+
