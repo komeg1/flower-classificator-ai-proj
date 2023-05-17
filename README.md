@@ -94,8 +94,3 @@ Make sure to adjust any file paths or configurations within the code according t
 ## Conclusion
 
 This project provides an image classifier with various models implemented using neural networks. The user interface allows easy interaction with the models by uploading images and obtaining predictions. Additionally, there are separate scripts for the CNN model, reference model, and a simple neural network model. Explore the different models and their performance, and feel free to modify the code to suit your specific needs.
-## Conclusion
-
-This project showcases the implementation of various image classification models using neural networks. The team has developed three models, namely CNN, Teacher-Student, and CNN with pruning. Additionally, a simple neural network model has been implemented, although it has poor performance. The project also includes an intuitive interface that allows users to upload their images and obtain flower predictions using one of the models.
-
-Please refer to the specific model files for more details on their implementation and usage. Feel free to explore and experiment with the models and interface to gain insights into image classification using neural networks.
