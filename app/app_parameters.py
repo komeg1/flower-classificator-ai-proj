@@ -1,5 +1,7 @@
 from enum import Enum
 
+from keras.models import load_model
+
 
 class Model(Enum):
     REFERENCE =0,
@@ -9,3 +11,6 @@ class Model(Enum):
 
 
 CHOSEN_MODEL = Model.REFERENCE
+
+modelFile = load_model('cnn_model.h5')
+
