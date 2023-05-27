@@ -11,6 +11,6 @@ class Model(Enum):
 
 
 CHOSEN_MODEL = Model.REFERENCE
-
+CLASSES = ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip']
 modelFile = load_model('cnn_model.h5')
 

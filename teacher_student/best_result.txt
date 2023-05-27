@@ -1,0 +1,8 @@
+Teacher model:
+34/34 [==============================] - 3s 89ms/step - loss: 1.1404 - accuracy: 0.6358
+
+Student model with knowledge distillation:
+34/34 [==============================] - 1s 34ms/step - accuracy: 0.5867 - student_loss: 1.1389
+
+Student model without knowledge distillation:
+34/34 [==============================] - 1s 33ms/step - loss: 1.1439 - accuracy: 0.5616

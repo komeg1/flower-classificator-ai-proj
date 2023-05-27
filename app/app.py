@@ -10,7 +10,7 @@ from PIL import Image, ImageTk
 import customtkinter as ctk
 import numpy as np
 customtkinter.set_appearance_mode('light')
-imageToCheck = []
+fileName = ''
 def load_image():
     filename = tk.filedialog.askopenfilename(initialdir="/",
                                           title="Select a File")
@@ -18,7 +18,6 @@ def load_image():
     img = Image.open(filename)
     img = img.resize((300, 300))
     prepareImageToCheck(filename)
-    print(imageToCheck)
     img = ImageTk.PhotoImage(img)
     # delete previous image
     for widget in imageFrame.winfo_children():
@@ -36,7 +35,23 @@ def prepareImageToCheck(filename):
     img = cv2.resize(img, (150, 150))
 
     prediction = modelFile.predict(np.array([img])/255)
-    print(prediction)
+
+    #add prediction text to the window
+    predictedText = ctk.CTkLabel(window, text=CLASSES[np.argmax(prediction)], font=('Lato', 15))
+    predictedText.place(x=130, y=350)
+
+    #add text that lists the probabilities of each class
+    probabilitiesText = ctk.CTkLabel(window, text='Probabilities:', font=('Lato', 15))
+    probabilitiesText.place(x=400, y=150)
+
+    prediction = CLASSES[0] + ': ' + str(round(prediction[0][0]*100, 2)) + '%\n' + CLASSES[1] + ': ' + str(round(prediction[0][1] *100, 2)) + '%\n' + CLASSES[2] + ': ' + str(round(prediction[0][2]*100, 2)) + '%\n' + CLASSES[3] + ': ' + str(round(prediction[0][3]*100, 2)) + '%\n' + CLASSES[4] + ': ' + str(round(prediction[0][4]*100, 2)) + '%'
+
+
+    probabilities = ctk.CTkLabel(window, text=prediction, font=('Lato', 15))
+    probabilities.place(x=400, y=170)
+
+
+
 
 def chosenModel(event):
 
@@ -52,19 +67,13 @@ def chosenModel(event):
         print('CNN model')
 
 def runModel():
-    print(imageToCheck)
-
-    print(prediction)
-
+    pass
 
 
 window = ctk.CTk()
 window.title("Flower classifier")
 window.geometry('650x400')
 window.resizable(False, False)
-
-
-
 
 modelChoice = ctk.CTkComboBox(window, values=['Reference model', 'Simple NN model', 'CNN model'], command=chosenModel)
 modelChoice.place(x=500, y=100)
