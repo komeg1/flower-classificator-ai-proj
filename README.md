@@ -16,38 +16,7 @@ This is a college project for an image classifier using neural networks implemen
 
 An interface has been developed to interact with the image classifier models. Users can upload their own photos and obtain predictions for the flower's name using one of the implemented models. The interface provides a user-friendly way to explore the capabilities of the models and observe their performance on various images.
 
-![alt text](images/1.png)
-
-## Project Structure
-
-The project repository follows the following structure:
-
-```
-- README.md                  # Project documentation
-- app/                       # Directory for the user interface
-    - app.py                 # Code for the user interface
-    - app_parameters.py      # Parameters for the user interface
-    
-- cnn/                       # Directory for the CNN model
-    - cnn_model.py           # Code for the CNN model
-
--pruning/                    # Directory for the pruning model
-    - pruning_model.py       # Code for the pruning model
-    
-- ref_model/                 # Directory for the reference model
-    - ref_model.py           # Code for the reference model
-    
-- simple/                    # Directory for the simple neural network model
-    - main.py                # Code for the simple model's main script
-    - data.py                # Code to convert images to a specific format and save them to .csv file
-    - model_methods.py       # Code for simple model functions
-    - params.npz             # Parameters for the simple model
-    
-- report/ 
-    - kwiaty.pdf             # College report of the project
-- README.md                  # Read me
-```
-
+<img src="https://github.com/komeg1/si-proj/images/1.png" width="500" height="300"/>
 
 ## Getting Started
 
@@ -115,15 +84,21 @@ Tomasz Krezymon
 
 ## Models and databases
 `models/` - https://drive.google.com/file/d/1bpqGvS8B_F7mK-vmqSPqIKT7uGQXG0I6/view?usp=sharing
+
 `inceptionv3/` - https://drive.google.com/file/d/18rPzlZPDlDFDfYt4CdrINGAg7QcPtEm2/view?usp=sharing
+
 `flowers/` - https://www.kaggle.com/datasets/alxmamaev/flowers-recognition
+
 `flowers2/` - https://www.kaggle.com/datasets/l3llff/flowers
+
 `flowers3/` - https://www.kaggle.com/datasets/nadyana/flowers
 
 ## References
 - Loss function of the distilled model:
 http://cs231n.stanford.edu/reports/2016/pdfs/120_Report.pdf
+
 - Example of knowledge distillation model:
 https://keras.io/examples/vision/knowledge_distillation/
+
 - Example of pruning model:
 https://colab.research.google.com/github/matthew-mcateer/Keras_pruning/blob/master/Model_pruning_exploration.ipynb#scrollTo=BXrVJhdZ5P4P
