@@ -16,7 +16,7 @@ This is a college project for an image classifier using neural networks implemen
 
 An interface has been developed to interact with the image classifier models. Users can upload their own photos and obtain predictions for the flower's name using one of the implemented models. The interface provides a user-friendly way to explore the capabilities of the models and observe their performance on various images.
 
-<img src="https://github.com/komeg1/flower-classificator-ai-proj/blob/main/images/1.png" width="500" height="300"/>
+<img src="https://github.com/komeg1/flower-classificator-ai-proj/blob/main/images/1.png" width="600" height="300"/>
 
 ## Getting Started
 
