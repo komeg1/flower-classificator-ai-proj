@@ -1,221 +1,146 @@
-#https://www.kaggle.com/code/rajmehra03/flower-recognition-cnn-keras
-import warnings
-
-warnings.filterwarnings('always')
-warnings.filterwarnings('ignore')
-
-# data visualisation and manipulation
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib import style
-import seaborn as sns
-# model selection
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix, roc_curve, roc_auc_score
-from sklearn.model_selection import GridSearchCV
-from sklearn.preprocessing import LabelEncoder
-
-# preprocess.
+# Importing Libraries
+from tensorflow import keras
+from keras.applications.inception_v3 import InceptionV3
 from keras.preprocessing.image import ImageDataGenerator
-
-# dl libraraies
-from keras import backend as K
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.optimizers import Adam, SGD, Adagrad, Adadelta, RMSprop
-from keras.utils import to_categorical
+from keras.layers import Conv2D, Flatten, MaxPooling2D, Dense, Dropout, GlobalAveragePooling2D
+from keras import optimizers, losses
+from keras.callbacks import ModelCheckpoint
+from keras.preprocessing import image
 
-# specifically for cnn
-from keras.layers import Dropout, Flatten, Activation
-from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
-
-import tensorflow as tf
-import random as rn
-
-# specifically for manipulating zipped images and getting numpy arrays of pixel values of images.
+import pickle
 import numpy as np
-from tqdm import tqdm
-import cv2
-import os
-from random import shuffle
-from zipfile import ZipFile
-from PIL import Image
+import matplotlib.pyplot as plt
 
-X=[]
-Z=[]
-IMG_SIZE=150
-FLOWER_DAISY_DIR='../flowers/daisy'
+import warnings
+warnings.filterwarnings("ignore")
 
-FLOWER_SUNFLOWER_DIR='../flowers/sunflower'
-FLOWER_TULIP_DIR='../flowers/tulip'
-FLOWER_DANDI_DIR='../flowers/dandelion'
-FLOWER_ROSE_DIR='../flowers/rose'
+# Base Path for all files
+data_dir = '../flowers'
 
-def assign_label(img,flower_type):
-    return flower_type
+datagenerator = {
+    "train": ImageDataGenerator(horizontal_flip=True,
+                                vertical_flip=True,
+                                rescale=1. / 255,
+                                validation_split=0.1,
+                                shear_range=0.1,
+                                zoom_range=0.1,
+                                width_shift_range=0.1,
+                                height_shift_range=0.1,
+                                rotation_range=30,
+                               ).flow_from_directory(directory=data_dir,
+                                                     target_size=(300, 300),
+                                                     subset='training',
+                                                    ),
 
+    "valid": ImageDataGenerator(rescale=1 / 255,
+                                validation_split=0.1,
+                               ).flow_from_directory(directory=data_dir,
+                                                     target_size=(300, 300),
+                                                     subset='validation',
+                                                    ),
+}
 
-def make_train_data(flower_type, DIR):
-    for img in tqdm(os.listdir(DIR)):
-        label = assign_label(img, flower_type)
+# Initializing InceptionV3 (pretrained) model with input image shape as (300, 300, 3)
+base_model = InceptionV3(weights=None, include_top=False, input_shape=(300, 300, 3))
 
-        path = os.path.join(DIR, img)
-        img = cv2.imread(path, cv2.IMREAD_COLOR)
-        img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+# Load Weights for the InceptionV3 Model
+base_model.load_weights('../inceptionv3/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5')
 
-        X.append(np.array(img))
-        Z.append(str(label))
+# Setting the Training of all layers of InceptionV3 model to false
+base_model.trainable = False
 
-make_train_data('Daisy',FLOWER_DAISY_DIR)
-print(len(X))
-
-make_train_data('Sunflower',FLOWER_SUNFLOWER_DIR)
-print(len(X))
-
-make_train_data('Tulip',FLOWER_TULIP_DIR)
-print(len(X))
-
-make_train_data('Dandelion',FLOWER_DANDI_DIR)
-print(len(X))
-
-make_train_data('Rose',FLOWER_ROSE_DIR)
-print(len(X))
-
-fig, ax = plt.subplots(5, 2)
-fig.set_size_inches(15, 15)
-for i in range(5):
-    for j in range(2):
-        l = rn.randint(0, len(Z))
-        ax[i, j].imshow(X[l])
-        ax[i, j].set_title('Flower: ' + Z[l])
-
-plt.tight_layout()
-
-le=LabelEncoder()
-Y=le.fit_transform(Z)
-Y=to_categorical(Y,5)
-X=np.array(X)
-X=X/255
-
-x_train,x_test,y_train,y_test=train_test_split(X,Y,test_size=0.25,random_state=42)
-
-np.random.seed(42)
-rn.seed(42)
-tf.random.set_seed(42)
-
-model = Sequential()
-model.add(Conv2D(filters=32, kernel_size=(5, 5), padding='Same', activation='relu', input_shape=(150, 150, 3)))
-model.add(MaxPooling2D(pool_size=(2,2)))
-
-model.add(Conv2D(filters=64, kernel_size=(3, 3), padding='Same', activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-
-model.add(Conv2D(filters=96, kernel_size=(3, 3), padding='Same', activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-
-model.add(Conv2D(filters=96, kernel_size=(3, 3), padding='Same', activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-
-model.add(Flatten())
-model.add(Dense(512))
-model.add(Activation('relu'))
-model.add(Dense(5, activation="softmax"))
-
-batch_size=128
-epochs=50
-
-from keras.callbacks import ReduceLROnPlateau
-red_lr= ReduceLROnPlateau(monitor='val_acc',patience=3,verbose=1,factor=0.1)
-
-datagen = ImageDataGenerator(
-        featurewise_center=False,  # set input mean to 0 over the dataset
-        samplewise_center=False,  # set each sample mean to 0
-        featurewise_std_normalization=False,  # divide inputs by std of the dataset
-        samplewise_std_normalization=False,  # divide each input by its std
-        zca_whitening=False,  # apply ZCA whitening
-        rotation_range=10,  # randomly rotate images in the range (degrees, 0 to 180)
-        zoom_range = 0.1, # Randomly zoom image
-        width_shift_range=0.2,  # randomly shift images horizontally (fraction of total width)
-        height_shift_range=0.2,  # randomly shift images vertically (fraction of total height)
-        horizontal_flip=True,  # randomly flip images
-        vertical_flip=False)  # randomly flip images
+# Adding some more layers at the end of the Model as per our requirement
+model = Sequential([
+    base_model,
+    GlobalAveragePooling2D(),
+    Dropout(0.15),
+    Dense(1024, activation='relu'),
+    Dense(5, activation='softmax') # 5 Output Neurons for 5 Classes
+])
 
 
-datagen.fit(x_train)
+# Using the Adam Optimizer to set the learning rate of our final model
+opt = optimizers.Adam(learning_rate=0.0001)
 
-model.compile(optimizer=Adam(lr=0.001),loss='categorical_crossentropy',metrics=['accuracy'])
-model.summary()
+# Compiling and setting the parameters we want our model to use
+model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=['accuracy'])
 
-History = model.fit_generator(datagen.flow(x_train,y_train, batch_size=batch_size),
-                              epochs = epochs, validation_data = (x_test,y_test),
-                              verbose = 1, steps_per_epoch=x_train.shape[0] // batch_size)
-# model.fit(x_train,y_train,epochs=epochs,batch_size=batch_size,validation_data = (x_test,y_test))
 
-model.save("ref_model.h5")
 
-plt.plot(History.history['loss'])
-plt.plot(History.history['val_loss'])
-plt.title('Model Loss')
-plt.ylabel('Loss')
-plt.xlabel('Epochs')
-plt.legend(['train', 'test'])
-plt.show()
+batch_size = 32
+epochs = 10
 
-plt.plot(History.history['acc'])
-plt.plot(History.history['val_acc'])
-plt.title('Model Accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epochs')
-plt.legend(['train', 'test'])
-plt.show()
+# Seperating Training and Testing Data
+train_generator = datagenerator["train"]
+valid_generator = datagenerator["valid"]
 
-# getting predictions on val set.
-pred=model.predict(x_test)
-pred_digits=np.argmax(pred,axis=1)
+steps_per_epoch = train_generator.n // batch_size
+validation_steps = valid_generator.n // batch_size
 
-# now storing some properly as well as misclassified indexes'.
-i=0
-prop_class=[]
-mis_class=[]
+print("steps_per_epoch :", steps_per_epoch)
+print("validation_steps :", validation_steps)
 
-for i in range(len(y_test)):
-    if(np.argmax(y_test[i])==pred_digits[i]):
-        prop_class.append(i)
-    if(len(prop_class)==8):
-        break
+# File Path to store the trained models
+filepath = "./model2_{epoch:02d}-{val_accuracy:.2f}.h5"
 
-i=0
-for i in range(len(y_test)):
-    if(not np.argmax(y_test[i])==pred_digits[i]):
-        mis_class.append(i)
-    if(len(mis_class)==8):
-        break
+# Using the ModelCheckpoint function to train and store all the best models
+checkpoint1 = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=True, mode='max')
 
-warnings.filterwarnings('always')
-warnings.filterwarnings('ignore')
+callbacks_list = [checkpoint1]
+# Training the Model
+history = model.fit_generator(generator=train_generator, epochs=epochs, steps_per_epoch=steps_per_epoch,
+                              validation_data=valid_generator, validation_steps=validation_steps,
+                              callbacks=callbacks_list)
 
-count=0
-fig,ax=plt.subplots(4,2)
-fig.set_size_inches(15,15)
-for i in range (4):
-    for j in range (2):
-        ax[i,j].imshow(x_test[prop_class[count]])
-        ax[i,j].set_title("Predicted Flower : "+str(le.inverse_transform([pred_digits[prop_class[count]]]))+"\n"+"Actual Flower : "+str(le.inverse_transform(np.argmax([y_test[prop_class[count]]]))))
-        plt.tight_layout()
-        count+=1
+# Check our folder and import the model with best validation accuracy
+loaded_best_model = keras.models.load_model("./model_10-0.91.h5")
 
-warnings.filterwarnings('always')
-warnings.filterwarnings('ignore')
 
-count=0
-fig,ax=plt.subplots(4,2)
-fig.set_size_inches(15,15)
-for i in range (4):
-    for j in range (2):
-        ax[i,j].imshow(x_test[mis_class[count]])
-        ax[i,j].set_title("Predicted Flower : "+str(le.inverse_transform([pred_digits[mis_class[count]]]))+"\n"+"Actual Flower : "+str(le.inverse_transform(np.argmax([y_test[mis_class[count]]]))))
-        plt.tight_layout()
-        count+=1
+# Custom function to load and predict label for the image
+def predict(img_rel_path):
+    # Import Image from the path with size of (300, 300)
+    img = image.load_img(img_rel_path, target_size=(300, 300))
+
+    # Convert Image to a numpy array
+    img = image.img_to_array(img, dtype=np.uint8)
+
+    # Scaling the Image Array values between 0 and 1
+    img = np.array(img) / 255.0
+
+    # Plotting the Loaded Image
+    plt.title("Loaded Image")
+    plt.axis('off')
+    plt.imshow(img.squeeze())
+    plt.show()
+
+    # Get the Predicted Label for the loaded Image
+    p = loaded_best_model.predict(img[np.newaxis, ...])
+
+    # Label array
+    labels = {1:'bellflower', 2:'daisy', 3:'dandelion',4:'lotus',5:'rose',6:'sunflower',7:'tuilip'}
+
+    print("\n\nMaximum Probability: ", np.max(p[0], axis=-1))
+    predicted_class = labels[np.argmax(p[0], axis=-1)]
+    print("Classified:", predicted_class, "\n\n")
+
+    classes = []
+    prob = []
+    print("\n-------------------Individual Probability--------------------------------\n")
+
+    for i, j in enumerate(p[0], 0):
+        print(labels[i].upper(), ':', round(j * 100, 2), '%')
+        classes.append(labels[i])
+        prob.append(round(j * 100, 2))
+
+    def plot_bar_x():
+        # this is for plotting purpose
+        index = np.arange(len(classes))
+        plt.bar(index, prob)
+        plt.xlabel('Labels', fontsize=8)
+        plt.ylabel('Probability', fontsize=8)
+        plt.xticks(index, classes, fontsize=8, rotation=20)
+        plt.title('Probability for loaded image')
+        plt.show()
+
+    plot_bar_x()

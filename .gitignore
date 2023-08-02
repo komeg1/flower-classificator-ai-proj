@@ -7,3 +7,9 @@ __pycache__
 simple/*.zip
 *.zip
 flowers2
+*.h5
+app/*.h5
+cnn/*.h5
+pruning/*.h5
+ref_model/*.h5
+simple/*.h5

@@ -8,18 +8,6 @@ class Distiller(keras.Model):
         self.student = student
 
     def compile(self, optimizer, metrics, student_loss_fn, distillation_loss_fn, alpha=0.1, temperature=3):
-        """ Configure the distiller.
-        Args:
-          optimizer: Keras optimizer for the student weights
-          metrics: Keras metrics for evaluation
-          student_loss_fn: Loss function of difference between student
-            predictions and ground-truth
-          distillation_loss_fn: Loss function of difference between soft
-            student predictions and soft teacher predictions
-          alpha: weight to student_loss_fn and 1-alpha to distillation_loss_fn
-          temperature: Temperature for softening probability distributions.
-            Larger temperature gives softer distributions.
-        """
         super(Distiller, self).compile(optimizer=optimizer, metrics=metrics)
         self.student_loss_fn = student_loss_fn
         self.distillation_loss_fn = distillation_loss_fn
@@ -38,7 +26,7 @@ class Distiller(keras.Model):
             distillation_loss = self.distillation_loss_fn(
                 tf.nn.softmax(teacher_predictions / self.temperature, axis=1),
                 tf.nn.softmax(student_predictions / self.temperature, axis=1),
-            )
+            ) * (self.temperature ** 2)
             loss = self.alpha * student_loss + (1 - self.alpha) * distillation_loss
 
         trainable_variables = self.student.trainable_variables
@@ -48,8 +36,14 @@ class Distiller(keras.Model):
 
         self.compiled_metrics.update_state(y_train, student_predictions)
 
-        results = {m.name: m.result() for m in self.metrics}
-        results.update({"student_loss": student_loss, "distillation_loss": distillation_loss})
+        results = {}
+        for metric in self.metrics:
+            results[metric.name] = metric.result()
+
+        results.update({
+            "student_loss": student_loss,
+            "distillation_loss": distillation_loss
+        })
         return results
 
     def test_step(self, data):
@@ -61,6 +55,9 @@ class Distiller(keras.Model):
 
         self.compiled_metrics.update_state(y_test, y_prediction)
 
-        results = {m.name: m.result() for m in self.metrics}
+        results = {}
+        for metric in self.metrics:
+            results[metric.name] = metric.result()
+
         results.update({"student_loss": student_loss})
         return results

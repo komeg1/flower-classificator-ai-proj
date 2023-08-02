@@ -16,6 +16,8 @@ This is a college project for an image classifier using neural networks implemen
 
 An interface has been developed to interact with the image classifier models. Users can upload their own photos and obtain predictions for the flower's name using one of the implemented models. The interface provides a user-friendly way to explore the capabilities of the models and observe their performance on various images.
 
+![alt text](images/1.png)
+
 ## Project Structure
 
 The project repository follows the following structure:
@@ -28,8 +30,9 @@ The project repository follows the following structure:
     
 - cnn/                       # Directory for the CNN model
     - cnn_model.py           # Code for the CNN model
-    
-- flowers/                   # Directory for the image dataset
+
+-pruning/                    # Directory for the pruning model
+    - pruning_model.py       # Code for the pruning model
     
 - ref_model/                 # Directory for the reference model
     - ref_model.py           # Code for the reference model
@@ -40,7 +43,9 @@ The project repository follows the following structure:
     - model_methods.py       # Code for simple model functions
     - params.npz             # Parameters for the simple model
     
-- ref_layers.txt             # Text file containing reference layers information
+- report/ 
+    - kwiaty.pdf             # College report of the project
+- README.md                  # Read me
 ```
 
 
@@ -61,9 +66,11 @@ cd si-proj
 pip install -r requirements.txt
 ```
 
-3. Ensure that the dataset is located in the `flowers/` directory.
+3. Ensure that the datasets are located in the `flowers/`, `flowers2/`, `flowers3/` directories.
 
-4. Run the user interface:
+4. Download `models/` and `inceptionv3/` directories that contain models for the app and put them in the main directory.
+
+5. Run the user interface:
 
 ```bash
 cd app
@@ -71,19 +78,24 @@ python app.py
 ```
 
 
-5.To use the CNN model, navigate to the `cnn/` directory and run the following command:
+6.To use the CNN model, navigate to the `cnn/` directory and run the following command:
 
 ```bash
 python cnn_model.py
 ```
 
-6, To use the reference model, navigate to the `ref_model/` directory and run the following command:
+7, To use the reference model, navigate to the `ref_model/` directory and run the following command:
 
 ```bash
 python ref_model.py
 ```
 
-7. To use the simple neural network model, navigate to the `simple/` directory and run the following command:
+8, To use the pruning model, navigate to the `pruning/` directory and run the following command:
+
+```bash
+python ref_model.py
+```
+9. To use the simple neural network model, navigate to the `simple/` directory and run the following command:
 
 ```bash
 python main.py
@@ -94,3 +106,24 @@ Make sure to adjust any file paths or configurations within the code according t
 ## Conclusion
 
 This project provides an image classifier with various models implemented using neural networks. The user interface allows easy interaction with the models by uploading images and obtaining predictions. Additionally, there are separate scripts for the CNN model, reference model, and a simple neural network model. Explore the different models and their performance, and feel free to modify the code to suit your specific needs.
+
+## Authors
+
+Robert Kalinowski
+Julia Chomicka
+Tomasz Krezymon
+
+## Models and databases
+`models/` - https://drive.google.com/file/d/1bpqGvS8B_F7mK-vmqSPqIKT7uGQXG0I6/view?usp=sharing
+`inceptionv3/` - https://drive.google.com/file/d/18rPzlZPDlDFDfYt4CdrINGAg7QcPtEm2/view?usp=sharing
+`flowers/` - https://www.kaggle.com/datasets/alxmamaev/flowers-recognition
+`flowers2/` - https://www.kaggle.com/datasets/l3llff/flowers
+`flowers3/` - https://www.kaggle.com/datasets/nadyana/flowers
+
+## References
+- Loss function of the distilled model:
+http://cs231n.stanford.edu/reports/2016/pdfs/120_Report.pdf
+- Example of knowledge distillation model:
+https://keras.io/examples/vision/knowledge_distillation/
+- Example of pruning model:
+https://colab.research.google.com/github/matthew-mcateer/Keras_pruning/blob/master/Model_pruning_exploration.ipynb#scrollTo=BXrVJhdZ5P4P

@@ -14,9 +14,7 @@ data = np.array(data)
 m,n = data.shape #label uwzgledniony
 np.random.shuffle(data)
 
-print(data[0:1000])
 data_train = data[0:1000].T
-print(data_train)
 Y_train = data_train[0]
 X_train = data_train[1:n]
 X_train = X_train / 255.
@@ -28,12 +26,15 @@ X_train = X_train / 255.
 _,m_train = X_train.shape
 
 #save the seed
+IMG_SIZE = 128
+PIXEL_SIZE = IMG_SIZE* IMG_SIZE
+DENSE_SIZE = 5
 
 def init_params():
-    W1 = np.random.rand(5, 16384) - 0.5
-    b1 = np.random.rand(5, 1) - 0.5
-    W2 = np.random.rand(5, 5) - 0.5
-    b2 = np.random.rand(5, 1) - 0.5
+    W1 = np.random.rand(DENSE_SIZE, IMG_SIZE) - 0.5
+    b1 = np.random.rand(DENSE_SIZE, 1) - 0.5
+    W2 = np.random.rand(DENSE_SIZE, 5) - 0.5
+    b2 = np.random.rand(DENSE_SIZE, 1) - 0.5
     return W1, b1, W2, b2
 
 
