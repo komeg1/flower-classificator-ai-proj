@@ -16,7 +16,7 @@ This is a college project for an image classifier using neural networks implemen
 
 An interface has been developed to interact with the image classifier models. Users can upload their own photos and obtain predictions for the flower's name using one of the implemented models. The interface provides a user-friendly way to explore the capabilities of the models and observe their performance on various images.
 
-<img src="https://github.com/komeg1/si-proj/images/1.png" width="500" height="300"/>
+<img src="https://github.com/komeg1/flower-classificator-ai-proj/images/1.png" width="500" height="300"/>
 
 ## Getting Started
 
@@ -25,8 +25,8 @@ To run the image classifier and interface, follow these steps:
 1. Clone the project repository:
 
 ```bash
-git clone https://github.com/komeg1/si-proj.git
-cd si-proj
+git clone https://github.com/komeg1/flower-classificator-ai-proj.git
+cd flower-classificator-ai-proj
 ```
 
 2. Set up the Python environment and install the required dependencies:
