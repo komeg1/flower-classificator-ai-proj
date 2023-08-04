@@ -1,6 +1,6 @@
 # Image Classifier using Neural Networks
 
-This is a college project for an image classifier using neural networks implemented in Python. The project is a collaborative effort by a team of three individuals. The goal is to build and compare three different models for image classification: Convolutional Neural Network (CNN), Teacher-Student model, and CNN with pruning. Additionally, a simple neural network model has been implemented, albeit with poor performance.
+This is a college project for an image classifier using neural networks implemented in Python. The project is a collaborative effort by a team of three students. The goal is to build and compare three different models for image classification: Convolutional Neural Network (CNN), Teacher-Student model, and CNN with pruning. Additionally, a simple neural network model has been implemented, albeit with poor performance.
 
 ## Models
 
@@ -16,17 +16,52 @@ This is a college project for an image classifier using neural networks implemen
 
 An interface has been developed to interact with the image classifier models. Users can upload their own photos and obtain predictions for the flower's name using one of the implemented models. The interface provides a user-friendly way to explore the capabilities of the models and observe their performance on various images.
 
-<img src="https://github.com/komeg1/flower-classificator-ai-proj/blob/main/images/1.png" width="600" height="300"/>
+![alt text](images/1.png)
+
+The app itself is available in the releases. It also contains all the models needed to run the app. 
+
+
+## Project Structure
+
+The rest of the project contains code that was used to create every model and prepare the report that is available only in Polish under `report/kwiaty.pdf`
+The project repository follows the following structure:
+
+```
+- app/                       # Directory for the user interface
+    - app.py                 # Code for the user interface
+    - app_parameters.py      # Parameters for the user interface
+    
+- cnn/                       # Directory for the CNN model
+    - cnn_model.py           # Code for the CNN model
+
+-pruning/                    # Directory for the pruning model
+    - pruning_model.py       # Code for the pruning model
+    
+- ref_model/                 # Directory for the reference model
+    - ref_model.py           # Code for the reference model
+    
+- simple/                    # Directory for the simple neural network model
+    - main.py                # Code for the simple model's main script
+    - data.py                # Code to convert images to a specific format and save them to .csv file
+    - model_methods.py       # Code for simple model functions
+    - params.npz             # Parameters for the simple model
+    
+- report/ 
+    - kwiaty.pdf             # College report of the project
+- README.md                  # Read me
+- requirements.txt           # Libraries for the project
+```
+
 
 ## Getting Started
 
-To run the image classifier and interface, follow these steps:
+
 
 1. Clone the project repository:
 
 ```bash
-git clone https://github.com/komeg1/flower-classificator-ai-proj.git
-cd flower-classificator-ai-proj
+git clone https://github.com/komeg1/si-proj.git
+cd si-proj
 ```
 
 2. Set up the Python environment and install the required dependencies:
@@ -78,10 +113,8 @@ This project provides an image classifier with various models implemented using 
 
 ## Authors
 
-Robert Kalinowski,
-
-Julia Chomicka,
-
+Robert Kalinowski
+Julia Chomicka
 Tomasz Krezymon
 
 ## Models and databases
@@ -98,9 +131,7 @@ Tomasz Krezymon
 ## References
 - Loss function of the distilled model:
 http://cs231n.stanford.edu/reports/2016/pdfs/120_Report.pdf
-
 - Example of knowledge distillation model:
 https://keras.io/examples/vision/knowledge_distillation/
-
 - Example of pruning model:
 https://colab.research.google.com/github/matthew-mcateer/Keras_pruning/blob/master/Model_pruning_exploration.ipynb#scrollTo=BXrVJhdZ5P4P
