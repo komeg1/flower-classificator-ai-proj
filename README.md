@@ -114,7 +114,9 @@ This project provides an image classifier with various models implemented using 
 ## Authors
 
 Robert Kalinowski
+
 Julia Chomicka
+
 Tomasz Krezymon
 
 ## Models and databases
