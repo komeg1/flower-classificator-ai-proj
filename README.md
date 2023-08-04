@@ -120,8 +120,9 @@ Julia Chomicka
 Tomasz Krezymon
 
 ## Models and databases
-The models are also available directly in the release.
-`models/` - https://drive.google.com/drive/folders/1xsl9FXl2KtAHSg_rL-gDPC1GP4KUUXcb?usp=sharing
+The models are also available directly in the [release](https://github.com/komeg1/flower-classificator-ai-proj/releases/).
+
+`models/` - https://drive.google.com/file/d/1Bhw3rUZs_emm64JT1ZOKZf-onSjo1UHs/view?usp=sharing
 
 `inceptionv3/` - https://drive.google.com/file/d/18rPzlZPDlDFDfYt4CdrINGAg7QcPtEm2/view?usp=sharing
 
