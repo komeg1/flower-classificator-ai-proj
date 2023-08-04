@@ -120,7 +120,8 @@ Julia Chomicka
 Tomasz Krezymon
 
 ## Models and databases
-`models/` - https://drive.google.com/file/d/1bpqGvS8B_F7mK-vmqSPqIKT7uGQXG0I6/view?usp=sharing
+The models are also available directly in the release.
+`models/` - https://drive.google.com/drive/folders/1xsl9FXl2KtAHSg_rL-gDPC1GP4KUUXcb?usp=sharing
 
 `inceptionv3/` - https://drive.google.com/file/d/18rPzlZPDlDFDfYt4CdrINGAg7QcPtEm2/view?usp=sharing
 
