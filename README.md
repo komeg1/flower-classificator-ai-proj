@@ -23,7 +23,7 @@ The app itself is available in the releases. It also contains all the models nee
 
 ## Project Structure
 
-The rest of the project contains code that was used to create every model and prepare the report that is available only in Polish under `report/kwiaty.pdf`
+The rest of the project contains code that was used to create every model and prepare the report that is available only in Polish under `doc/report_pl.pdf`
 The project repository follows the following structure:
 
 ```
@@ -46,8 +46,8 @@ The project repository follows the following structure:
     - model_methods.py       # Code for simple model functions
     - params.npz             # Parameters for the simple model
     
-- report/ 
-    - kwiaty.pdf             # College report of the project
+- doc/ 
+    - report_pl.pdf             # College report of the project
 - README.md                  # Read me
 - requirements.txt           # Libraries for the project
 ```
@@ -71,6 +71,7 @@ pip install -r requirements.txt
 ```
 
 3. Ensure that the datasets are located in the `flowers/`, `flowers2/`, `flowers3/` directories.
+    >*(all datasets and models download links are available [below](#models-and-databases))*
 
 4. Download `models/` and `inceptionv3/` directories that contain models for the app and put them in the main directory.
 
