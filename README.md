@@ -1,6 +1,8 @@
 # Image Classifier using Neural Networks
 
-This is a college project for an image classifier using neural networks implemented in Python. The project is a collaborative effort by a team of three students. The goal is to build and compare three different models for image classification: Convolutional Neural Network (CNN), Teacher-Student model, and CNN with pruning. Additionally, a simple neural network model has been implemented, albeit with poor performance.
+This is a college project for an image classifier using neural networks implemented in Python. The project is a collaborative effort by a team of three students. The goal is to build and compare three different models for image classification: Convolutional Neural Network (CNN), Teacher-Student model, and CNN with pruning. Additionally, a simple neural network built from scratch has been implemented, although with poor performance.
+
+UI app with all the models is available in the [release](https://github.com/komeg1/flower-classificator-ai-proj/releases/tag/v0.1.1)
 
 ## Models
 
